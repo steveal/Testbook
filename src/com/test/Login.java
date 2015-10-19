@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 public class Login {
 
-	private JFrame frame = new JFrame("登录");
+	private JFrame frame = new JFrame("登录XX");
 	private Container c = frame.getContentPane();
 	private JTextField username = new JTextField();
 	private JPasswordField password = new JPasswordField();
