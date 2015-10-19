@@ -142,7 +142,7 @@ public class MainPanel extends JFrame {
 					// String bookName = "灵域";
 					String store = tstoreAddress.getText();
 					if(!store.endsWith("\\") && !store.endsWith("/")) {
-						store += store + File.separator;
+						store = store + File.separator;
 					}
 					File f = new File(store);
 					if(!f.exists()) {
@@ -151,7 +151,10 @@ public class MainPanel extends JFrame {
 					
 					String bookName = tbookName.getText();
 					String bookIndex = tbookContentUrl.getText();
-
+					if(!bookIndex.endsWith("\\") && !bookIndex.endsWith("/")) {
+						bookIndex = bookIndex + "\\";
+					}
+					
 					Book b = new Book(bookIndex, bookName);
 					b.setBookStore(store);
 					try{
