@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
@@ -53,6 +54,7 @@ public class Util {
 		List<DownloadThread> dltList = new ArrayList<DownloadThread>();
 		int splitSize = 100;
 		Map m = new HashMap();
+		
 		for (int i = 0; i < chapterList.size();) {
 			int toIndex = i + splitSize;
 			if (toIndex < chapterList.size()) {
@@ -65,11 +67,18 @@ public class Util {
 			i += splitSize;
 
 		}
+		CountDownLatch latch = new CountDownLatch(dltList.size());
 
-		for (Thread h : dltList) {
+		for (DownloadThread h : dltList) {
+			h.setCd(latch);
 			h.start();
 		}
-
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static String createBookIndexPage(String store, Book b) {

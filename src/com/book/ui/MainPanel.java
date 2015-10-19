@@ -137,7 +137,6 @@ public class MainPanel extends JFrame {
 			bdownload.addMouseListener(new MouseAdapter() {
 
 				public void mouseClicked(MouseEvent arg0) {
-					System.out.println("Download Click");
 					// String store = "F:\\book\\linyu\\";
 					// String bookIndex = "http://www.xbiquge.com/0_311/";
 					// String bookName = "灵域";
@@ -160,7 +159,7 @@ public class MainPanel extends JFrame {
 					}catch(Exception e) {
 						//e.printStackTrace();
 					}
-					
+					javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
 					bookList.add(b);
 					table.updateUI();
 					table.repaint();
