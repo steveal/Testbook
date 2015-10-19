@@ -1,5 +1,6 @@
 package com.book.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -10,7 +11,7 @@ public class DownloadThread extends Thread {
 	private List<BookChapter> chapterList;
 	private String store;
 	private String url;
-	private CountDownLatch latch;
+	private CountDownLatch latch ;
 
 	public void setCd(CountDownLatch latch) {
 		this.latch = latch;
@@ -31,6 +32,16 @@ public class DownloadThread extends Thread {
 				String html = Util.getChapter(url, chapterPart);
 				Util.writeFile(store + chapterPart.getChapterFileName() , html);
 			}
-			latch.countDown();
+			if(null != latch) {
+				latch.countDown();
+			}			
+	}
+	
+	public static void main(String[] args) {
+		String store = "E:\\Book\\zzz";
+		String url = "http://www.xbiquge.com/10_10916/";
+		List<BookChapter> chapterList = new ArrayList<BookChapter>();
+		chapterList.add(new BookChapter("1","5652411.html",""));
+		new DownloadThread(store,url,chapterList).start();
 	}
 }
