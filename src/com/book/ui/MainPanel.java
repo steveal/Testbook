@@ -164,6 +164,7 @@ public class MainPanel extends JFrame {
 						Boolean downloadIsSuccess = b.DownloadBook();
 						if(downloadIsSuccess) {
 							javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
+							bookList.add(b);
 						}else {
 							javax.swing.JOptionPane.showMessageDialog(null,"Download Failed!");
 						}
@@ -171,7 +172,7 @@ public class MainPanel extends JFrame {
 						//e.printStackTrace();
 					}
 					
-					bookList.add(b);
+					
 					table.updateUI();
 					table.repaint();
 				}
