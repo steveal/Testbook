@@ -70,7 +70,7 @@ public class Util {
 		CountDownLatch latch = new CountDownLatch(dltList.size());
 
 		for (DownloadThread h : dltList) {
-			h.setCd(latch);
+			h.setLatch(latch);
 			h.start();
 		}
 		try {

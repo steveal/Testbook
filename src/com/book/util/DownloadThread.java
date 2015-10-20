@@ -13,7 +13,7 @@ public class DownloadThread extends Thread {
 	private String url;
 	private CountDownLatch latch ;
 
-	public void setCd(CountDownLatch latch) {
+	public void setLatch(CountDownLatch latch) {
 		this.latch = latch;
 	}
 
