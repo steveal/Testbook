@@ -137,13 +137,12 @@ public class MainPanel extends JFrame {
 			bdownload.addMouseListener(new MouseAdapter() {
 
 				public void mouseClicked(MouseEvent arg0) {
-					System.out.println("Download Click");
 					// String store = "F:\\book\\linyu\\";
 					// String bookIndex = "http://www.xbiquge.com/0_311/";
 					// String bookName = "灵域";
 					String store = tstoreAddress.getText();
 					if(!store.endsWith("\\") && !store.endsWith("/")) {
-						store += store + File.separator;
+						store = store + File.separator;
 					}
 					File f = new File(store);
 					if(!f.exists()) {
@@ -152,7 +151,10 @@ public class MainPanel extends JFrame {
 					
 					String bookName = tbookName.getText();
 					String bookIndex = tbookContentUrl.getText();
-
+					if(!bookIndex.endsWith("\\") && !bookIndex.endsWith("/")) {
+						bookIndex = bookIndex + "\\";
+					}
+					
 					Book b = new Book(bookIndex, bookName);
 					b.setBookStore(store);
 					try{
@@ -160,7 +162,7 @@ public class MainPanel extends JFrame {
 					}catch(Exception e) {
 						//e.printStackTrace();
 					}
-					
+					javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
 					bookList.add(b);
 					table.updateUI();
 					table.repaint();
