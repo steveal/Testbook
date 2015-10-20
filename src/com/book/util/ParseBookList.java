@@ -8,19 +8,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-import com.book.*;
+import com.book.Book;
 
 public class ParseBookList {
 
@@ -107,7 +108,13 @@ public class ParseBookList {
 	}
 
 	public static void WriteBookList(List<Book> bookList) throws Exception {
-		SAXReader reader = new SAXReader();
+		
+		Set<Book> set = new HashSet<Book>();
+		set.addAll(bookList);
+		
+		bookList.clear();
+		bookList.addAll(set);
+		
 		// 通过read方法读取一个文件 转换成Document对象
 		// Document document = reader.read(new
 		// File(ParseBookList.BOOK_LIST_FILE));
@@ -142,17 +149,39 @@ public class ParseBookList {
 	public static void main(String[] args) {
 
 		
-			List<Book> bookList = new ArrayList<Book>();
-			Book b = new Book("bookaddress","bookname");
-			b.setBookStore("bookstore");
-			bookList.add(b);
-			try {
-				WriteBookList(bookList);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//			List<Book> bookList = new ArrayList<Book>();
+//			Book b = new Book("bookaddress","bookname");
+//			b.setBookStore("bookstore");
+//			bookList.add(b);
+//			try {
+//				WriteBookList(bookList);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		List<Book> bookList;
+		try {
+			bookList = getBookList();
+			System.out.println(bookList.size());
+			for(Book b : bookList) {
+				System.out.println(b);
 			}
-
+			Set set = new HashSet();
+			set.addAll(bookList);
+			
+			bookList.clear();
+			bookList.addAll(set);
+			System.out.println("-------------------");
+			System.out.println(bookList.size());
+			for(Book b : bookList) {
+				System.out.println(b);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	

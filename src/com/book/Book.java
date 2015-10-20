@@ -81,6 +81,32 @@ public class Book {
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((bookName == null) ? 0 : bookName.hashCode());
+		result = prime * result
+				+ ((bookAddress == null) ? 0 : bookAddress.hashCode());
+		result = prime * result
+				+ ((bookStore == null) ? 0 : bookStore.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Book) {
+			Book cmp = (Book) obj;
+			if (cmp.getBookName().equals(bookName)
+					&& cmp.getBookAddress().equals(bookAddress)
+					&& cmp.getBookStore().equals(bookStore)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String getBookAddress() {
 		return bookAddress; 
 	}
