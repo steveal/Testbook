@@ -43,7 +43,7 @@ public class MainPanel extends JFrame {
 	private BookTable bookTable;
 	private JTable table;
 
-	private static final ImageIcon icon = new ImageIcon("./file/image/title.png"); // 将要显示到托盘中的图标
+	private static final ImageIcon icon = new ImageIcon("./file/image/tray.png"); // 将要显示到托盘中的图标
 	
 	private SystemTray tray;
 	private PopupMenu pop = new PopupMenu(); // 构造一个右键弹出式菜单
