@@ -22,7 +22,7 @@ public class NetBookTest {
 		
 		Book b = new Book(bookIndex,bookName);
 		
-		Util.DownloadBook(b, store);
+		b.DownloadBook();
 //		List<BookChapter> chapterList = Util.getChapterList(b);
 //		for(BookChapter bc: chapterList) {
 //			System.out.println(bc);

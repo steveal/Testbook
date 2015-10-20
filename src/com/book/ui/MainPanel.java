@@ -115,6 +115,7 @@ public class MainPanel extends JFrame {
 
 			tbookName = new JTextField(15);
 			add(g, c, tbookName, 1, 0, 2, 1);
+			tbookName.setText("tianqizhimen");
 		}
 		{
 			lstoreAddress = new JLabel("下载到 ");
@@ -122,6 +123,7 @@ public class MainPanel extends JFrame {
 
 			tstoreAddress = new JTextField(15);
 			add(g, c, tstoreAddress, 1, 1, 2, 1);
+			tstoreAddress.setText("E:\\book\\tianqizhimen");
 		}
 		{
 			lbookContentUrl = new JLabel("下载网址 ");
@@ -129,6 +131,7 @@ public class MainPanel extends JFrame {
 
 			tbookContentUrl = new JTextField(15);
 			add(g, c, tbookContentUrl, 1, 2, 2, 1);
+			tbookContentUrl.setText("http://www.xbiquge.com/10_10916/");
 		}
 
 		{
@@ -158,11 +161,16 @@ public class MainPanel extends JFrame {
 					Book b = new Book(bookIndex, bookName);
 					b.setBookStore(store);
 					try{
-						Util.DownloadBook(b, store);
+						Boolean downloadIsSuccess = b.DownloadBook();
+						if(downloadIsSuccess) {
+							javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
+						}else {
+							javax.swing.JOptionPane.showMessageDialog(null,"Download Failed!");
+						}
 					}catch(Exception e) {
 						//e.printStackTrace();
 					}
-					javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
+					
 					bookList.add(b);
 					table.updateUI();
 					table.repaint();
@@ -192,7 +200,6 @@ public class MainPanel extends JFrame {
 						// 得到选中的行列的索引值
 
 						Book b = bookList.get(table.getSelectedRow());
-						System.out.println(b);
 						// 得到选中的单元格的值，表格中都是字符串
 						// javax.swing.JOptionPane.showMessageDialog(null, b);
 						Desktop dt = Desktop.getDesktop();

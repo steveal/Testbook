@@ -9,8 +9,8 @@ public class BookChapter {
 
 	public BookChapter(String chapterName, String chapterFileName,
 			String chapterIndex) {
-		this.chapterFileName = chapterFileName;
 		this.chapterName = chapterName;
+		this.chapterFileName = chapterFileName;
 		this.chapterIndex = chapterIndex;
 	}
 

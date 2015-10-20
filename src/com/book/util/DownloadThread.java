@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.book.BookChapter;
 
 public class DownloadThread extends Thread {
@@ -13,6 +16,7 @@ public class DownloadThread extends Thread {
 	private String url;
 	private CountDownLatch latch ;
 
+	private static Logger logger = LoggerFactory.getLogger(DownloadThread.class);
 	public void setLatch(CountDownLatch latch) {
 		this.latch = latch;
 	}
@@ -29,8 +33,15 @@ public class DownloadThread extends Thread {
 
 			for(BookChapter chapterPart : this.chapterList) {
 //				String html = Util.getChapter(this.url + chapterPart.getChapterFileName());
-				String html = Util.getChapter(url, chapterPart);
-				Util.writeFile(store + chapterPart.getChapterFileName() , html);
+				String html;
+				try {
+					html = Util.getChapter(url, chapterPart);
+					Util.writeFile(store + chapterPart.getChapterFileName() , html);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					logger.error("Download Chapter failed, ChapterName is "  + chapterPart.getChapterName() + ", URL is " + url + "\\" + chapterPart.getChapterFileName());
+				}
+				
 			}
 			if(null != latch) {
 				latch.countDown();

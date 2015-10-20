@@ -3,18 +3,23 @@ package com.book.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.book.Book;
 import com.book.util.ParseBookList;
 
 
 public class Main {
 	
-	static List<Book> bookList = new ArrayList<Book>();
+	
+	private static List<Book> bookList = new ArrayList<Book>();
+	private static Logger logger = LoggerFactory.getLogger(Main.class);
 	
 	public static void main(String[] args) {
-		bookList = loadBookList();
+		logger.info("start");
+		bookList = loadBookList();	
 		MainPanel mpanel = new MainPanel("BOOK",bookList);
-		System.out.println("mpanel close");
 	}
 	
 	public static List<Book> loadBookList() {
