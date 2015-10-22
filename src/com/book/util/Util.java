@@ -40,6 +40,10 @@ public final class Util {
 	
 	private static Logger logger = LoggerFactory.getLogger(Util.class);
 
+	private Util() {
+		
+	}
+	
 	public static String createBookIndexPage(String store, Book b) {
 		String content = "";
 		for (BookChapter bc : b.getChapterList()) {
