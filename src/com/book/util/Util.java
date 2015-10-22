@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.book.Book;
 import com.book.BookChapter;
 
-public class Util {
+public final class Util {
 	
 	private static Logger logger = LoggerFactory.getLogger(Util.class);
 
