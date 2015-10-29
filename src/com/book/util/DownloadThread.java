@@ -30,7 +30,7 @@ public class DownloadThread extends Thread {
 	
 	@Override
 	public void run() {
-
+			logger.info(Thread.currentThread().getName() + " start!");
 			for(BookChapter chapterPart : this.chapterList) {
 //				String html = Util.getChapter(this.url + chapterPart.getChapterFileName());
 				String html;
@@ -44,6 +44,7 @@ public class DownloadThread extends Thread {
 				
 			}
 			if(null != latch) {
+				logger.info(Thread.currentThread().getName() + " done!");
 				latch.countDown();
 			}			
 	}
