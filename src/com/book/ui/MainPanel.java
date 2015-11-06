@@ -46,11 +46,15 @@ public class MainPanel extends JFrame {
 	private static final ImageIcon icon = new ImageIcon("./file/image/tray.png"); // 将要显示到托盘中的图标
 	
 	private SystemTray tray;
+	private TrayIcon trayIcon;
 	private PopupMenu pop = new PopupMenu(); // 构造一个右键弹出式菜单
 	private final MenuItem show = new MenuItem("open");
 	private  final MenuItem exit = new MenuItem("exit");
 	
 	private List<Book> bookList = new ArrayList<Book>();
+	
+	
+	private Boolean isDownloading = false;
 
 	
 	
@@ -78,7 +82,7 @@ public class MainPanel extends JFrame {
 			pop.add(exit);
 			
 			tray = SystemTray.getSystemTray();
-			TrayIcon trayIcon = new TrayIcon(icon.getImage(), "book tray", pop);
+			trayIcon = new TrayIcon(icon.getImage(), "book tray", pop);
 			trayIcon.setImageAutoSize(true);
 			trayIcon.setToolTip("book tray");
 
@@ -86,8 +90,13 @@ public class MainPanel extends JFrame {
 			ActionListener al2 = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// 退出程序
-					if (e.getSource() == exit) {
-						System.exit(0);// 退出程序
+					if (!isDownloading) {
+						if (e.getSource() == exit) {
+							tray.remove(trayIcon);
+							System.exit(0);// 退出程序
+						}
+					}else {
+						javax.swing.JOptionPane.showMessageDialog(null,"正在下载，请稍后!");
 					}
 					// 打开程序
 					if (e.getSource() == show) {
@@ -140,6 +149,11 @@ public class MainPanel extends JFrame {
 			bdownload.addMouseListener(new MouseAdapter() {
 
 				public void mouseClicked(MouseEvent arg0) {
+					
+					if(isDownloading) {
+						javax.swing.JOptionPane.showMessageDialog(null,"is Downloading Last Book");
+						return;
+					}
 					// String store = "F:\\book\\linyu\\";
 					// String bookIndex = "http://www.xbiquge.com/0_311/";
 					// String bookName = "灵域";
@@ -158,16 +172,23 @@ public class MainPanel extends JFrame {
 						bookIndex = bookIndex + "\\";
 					}
 					
-					Book b = new Book(bookIndex, bookName);
+					final Book b = new Book(bookIndex, bookName);
 					b.setBookStore(store);
 					try{
-						Boolean downloadIsSuccess = b.DownloadBook();
-						if(downloadIsSuccess) {
-							javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
-							bookList.add(b);
-						}else {
-							javax.swing.JOptionPane.showMessageDialog(null,"Download Failed!");
-						}
+						new Thread(){
+							public void run() {
+								isDownloading = true;
+								Boolean downloadIsSuccess = b.DownloadBook();
+								if(downloadIsSuccess) {
+									javax.swing.JOptionPane.showMessageDialog(null,"Download Complete!");
+									bookList.add(b);
+								}else {
+									javax.swing.JOptionPane.showMessageDialog(null,"Download Failed!");
+								}
+								isDownloading = false;
+							}
+						}.start();
+						
 					}catch(Exception e) {
 						//e.printStackTrace();
 					}

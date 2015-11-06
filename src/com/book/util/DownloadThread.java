@@ -15,6 +15,7 @@ public class DownloadThread extends Thread {
 	private String store;
 	private String url;
 	private CountDownLatch latch ;
+	private DownLoadLogStorge logStorge;
 
 	private static Logger logger = LoggerFactory.getLogger(DownloadThread.class);
 	public void setLatch(CountDownLatch latch) {
@@ -28,6 +29,11 @@ public class DownloadThread extends Thread {
 		
 	}
 	
+	public DownloadThread(String store, String url, List<BookChapter> chapterList, DownLoadLogStorge _logStorge) {
+		this(store,url,chapterList);
+		this.logStorge = _logStorge;
+	}
+	
 	@Override
 	public void run() {
 			logger.info(Thread.currentThread().getName() + " start!");
@@ -37,6 +43,9 @@ public class DownloadThread extends Thread {
 				try {
 					html = Util.getChapter(url, chapterPart);
 					Util.writeFile(store + chapterPart.getChapterFileName() , html);
+					if(logStorge!=null) {
+						logStorge.push(Thread.currentThread() + " download " + store + chapterPart.getChapterFileName() );
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					logger.error("Download Chapter failed, ChapterName is "  + chapterPart.getChapterName() + ", URL is " + url + "\\" + chapterPart.getChapterFileName());
@@ -54,6 +63,8 @@ public class DownloadThread extends Thread {
 		String url = "http://www.xbiquge.com/10_10916/";
 		List<BookChapter> chapterList = new ArrayList<BookChapter>();
 		chapterList.add(new BookChapter("1","5652411.html",""));
-		new DownloadThread(store,url,chapterList).start();
+		DownLoadLogStorge storge = new DownLoadLogStorge();
+		new Thread(new LogPrint(storge)).start();
+		new DownloadThread(store,url,chapterList,storge).start();
 	}
 }

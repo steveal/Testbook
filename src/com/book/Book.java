@@ -9,7 +9,9 @@ import java.util.concurrent.CountDownLatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.book.util.DownLoadLogStorge;
 import com.book.util.DownloadThread;
+import com.book.util.LogPrint;
 import com.book.util.Util;
 
 public class Book {
@@ -28,6 +30,13 @@ public class Book {
 	
 	public  Boolean DownloadBook() {
 		logger.info("start download book。 " + this.toString());
+		
+		//增加自己写的一个简单日志
+		DownLoadLogStorge storge = new DownLoadLogStorge();
+		LogPrint  logPrint = new LogPrint(storge);
+		new Thread(logPrint).start();
+		
+		
 		List<BookChapter> chapterList = new ArrayList<BookChapter>();
 		String store = getBookStore();
 		try {
@@ -52,16 +61,18 @@ public class Book {
 		// down every chapter page
 		List<DownloadThread> dltList = new ArrayList<DownloadThread>();
 		int splitSize = 100;
-		Map m = new HashMap();
+
 		
 		for (int i = 0; i < chapterList.size();) {
 			int toIndex = i + splitSize;
 			if (toIndex < chapterList.size()) {
-				dltList.add(new DownloadThread(store, getBookAddress(),
-						chapterList.subList(i, toIndex)));
+				DownloadThread dh = new DownloadThread(store, getBookAddress(),
+						chapterList.subList(i, toIndex),storge);
+				dltList.add(dh);
 			} else {
-				dltList.add(new DownloadThread(store, getBookAddress(),
-						chapterList.subList(i, chapterList.size())));
+				DownloadThread dh =  new DownloadThread(store, getBookAddress(),
+						chapterList.subList(i, chapterList.size()),storge);
+				dltList.add(dh);
 			}
 			i += splitSize;
 
@@ -74,6 +85,7 @@ public class Book {
 		}
 		try {
 			latch.await();
+			logPrint.setFinished(true);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
